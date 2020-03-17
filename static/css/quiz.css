@@ -1,0 +1,43 @@
+.container{
+
+    /* padding-top: 2em; */
+    height: auto;
+    background: white;
+    width: 1400px;
+    /* margin-top: 30px;
+    border-radius: 25px; */
+
+}
+.row .col.pull-s7 {
+    /* right: 58.3333333333%; */
+    /* border-radius: 25px; */
+    
+}
+
+.row .col.push-s5 {
+    /* left: 41.6666666667%; */
+
+}
+h4
+{
+    color: aqua;
+}
+
+nav .nav-wrapper {
+    position: relative;
+    /* height: 100%; */
+    background-color: lightgray;
+}
+.row {
+    /* margin-right: -15px;
+    margin-left: -59px;
+    border-radius: 25px; */
+}
+nav .brand-logo {
+    position: absolute;
+    color: chocolate;
+
+}
+.card{
+    height: auto;
+}

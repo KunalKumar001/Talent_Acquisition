@@ -1,0 +1,117 @@
+{% include "header.html" %}
+
+<body>
+  <form action="result" name="quiz" method="post">
+    {% csrf_token %}
+  <nav>
+    <div class="nav-wrapper">
+      <a href="#" class="brand-logo"><b></b> </a>
+      <!-- <img src="../static/images/logo-small.svg" width="120" height="70"> -->
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href=""></a></li>
+        <li><a href=""></a></li>
+        <li><a href=""><b></b></a></li>
+      </ul>
+    </div>
+  </nav>
+
+<div class="container">
+  <div class="row">
+    <div class="col s12"><span class="flow-text">
+    <div class="card white">
+      <h4>1.1 MULTIPLE CHOICE QUESTIONS</h4>
+    <div class="question" style="text-size-adjust: 10px;">
+      {%for i in result%}
+      <div class="question1"></div>
+      {% with counter=forloop.counter  %}
+      Q.{{counter}} {{i.title}}
+      <input type="hidden" name="question"  value="{{ i.id }}">
+      <div>
+        <div class="options">
+      {% for key,value in i.option.items %}
+      <label>
+      <input name="{{i.id}}" type="radio" value="{{value}}"/>
+      <span>{{key}} ) {{value}}</span>
+      </label>
+<br>
+      {%endfor%}
+    </div>
+      {%endwith%}
+      </div>
+      <br>
+      {%endfor%}
+      <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+        <i class="material-icons right">send</i>
+        </button>
+    </div>
+  </div>
+  <!-- <input type="submit" name="mysubmit" class="btnRegister"  value="finish test"/> -->
+ </div>
+ </div>
+</div>
+</span>
+
+{% include "footer.html" %}
+</form>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <!-- {% for Question in Questions %}
+        {{Question.id}}
+    {% endfor %} -->
