@@ -1,41 +1,46 @@
 {% include "header.html" %}
 
   <body>
-      <div class="container">
-        <form action="welcome" method="post">
-          <!-- <div class="col s12 pull-s7">
-            <span class="flow-text">
-            </span>
-          </div> -->
-    
-
-          <div class="row">
-            <div class="col-sm-6">
-              <div class="card1">
-                <div class="card-body">
-                  <img class="card-img" src="../static/images/image-1.png" alt="Card image cap">
-                  <h5 class="card-title"></h5>
-                  <p class="card-text"></p>
-                  <!-- <a href="#" class="btn btn-primary"></a> -->
-                </div>
-              </div>
-            </div>
-            
-            <div class="col-sm-6">
-              <div class="card2">
-                  <h1 class="card-title"><b>Where Work <br>Happens</b></h1>
-                  <p class="card-text">With supporting text below as a natural lead-in to additional content.
-                    This is a longer card with supporting text below as a natural lead-in to additional content.
-                     This content is a little bit longer.
-                  </p>
-                  <input type="button" class="btn btn-primary" onclick="window.location.href='question/quiz'" value="start test"/>
-                </div>
-              </div>
-            </div>
+    {% include "dashboard.html" %}
+      <div class="">
+        <div class="center-align">
+          <div class="col s12 m12">
+            <h4>Hey <b style="text-transform: uppercase;"> &#128075;&#127995; {{user.username}}   </b> &#128512; &#128519; &#128526;<br>
+              &#128591;&#127995; Welcome to Talent Aquisition Screening Tool by Navadhiti &#128591;&#127995;</h4>
           </div>
-      
+        </div>
+        
+        <div class="row">
+            <div class="col s6 m6 ">
+                <img src="../static/images/welcome.jpg" width="90%"> 
+            </div>
+        <div class="col s12 m6">
+          <ol style="list-style-type:disc;">
+          <b><li>This test contain 20 questions</li><br>
+            <li>The test will be of 30 min of duration</li><br>
+            <li>Each question carry 1 mark</li><br>
+            <li>Questions will be logicl,general knowledge and maths</li><br>
+            <li>Ther is no negitive marks</li><br>
+            <li>No switching between tabs</li><br>
+            <li>Please read the questions carefully and answe the questions</li><br>
+            <li>Please utilise all your time and answer all the questions</li><br>
+            <li>All the Best</li></b>
+          </ol> 
+          <input type="button" class="btn btn-primary" onclick="window.location.href='question/quiz'" value="Start Test"/>
+        </div>
+        </div>
+          <!-- <input type="button" class="btn btn-primary" onclick="window.location.href='question/quiz'" value="Start Test"/> -->
       </div>
-      {% include "footer.html" %}
+      
+      
+    {% include "footer.html" %}
+
+    <footer class="page-footer"> 
+      <div class="footer-copyright">
+        <div class="container center-align">
+          © Copyright <b>Navadhiti</b>. All Rights Reserved
+        </div>
+      </div>
+    </footer>
   </body>
-</form>
 </html>

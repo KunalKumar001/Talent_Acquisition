@@ -15,7 +15,6 @@ def quiz(request):
 
 def result(request):
     form=request.POST.getlist('question')
-    print(form)
     marks=0
     wrong=0
     tempQues=[]
@@ -24,31 +23,24 @@ def result(request):
         # print(i)
         ques=request.POST[i]
         tempQues.append(ques)
-        print("user answr",ques)
         Ques=Questions.objects.filter(id=i)
         # print("this is ",Ques)
         res=Ques[0].answer
         tempRes.append(res)
-        print("correct",res)
         if(res==ques):    
             marks+=1
         else:
             wrong+=1
        
-    print(marks)
-    print(wrong)
     val=Results()
     val.results=[{'questions':form ,'user_answers':tempQues, 'correct_answer':tempRes}]
-    print(val.results)
-    val.score=[{'correct':marks ,'wrong':wrong}]
-    print(val.score)
-    val.auth_id=request.auth
-    print(val.auth_id)
+    val.score=[{'Correct':marks ,'Wrong':wrong}]
+    val.auth_id=request.user.id
     val.save()
-    
-    return render(request,'result.html')       
+    return render(request,'result.html',{'marks':marks,'wrong':wrong})       
    
-   
+def search(request):
+    return render(request, 'result.html')
    
    
    

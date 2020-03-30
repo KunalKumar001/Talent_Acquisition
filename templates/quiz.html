@@ -1,25 +1,122 @@
 {% include "header.html" %}
-
 <body>
-  <form action="result" name="quiz" method="post">
-    {% csrf_token %}
-  <nav>
-    <div class="nav-wrapper">
-      <a href="#" class="brand-logo"><b></b> </a>
-      <!-- <img src="../static/images/logo-small.svg" width="120" height="70"> -->
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li><a href=""></a></li>
-        <li><a href=""></a></li>
-        <li><a href=""><b></b></a></li>
-      </ul>
-    </div>
-  </nav>
+  
+  {% include "dashboard.html" %}
 
-<div class="container">
+<div class="row">
+  <div class="col s6 m6">
+    <h4 style="margin-left: 50px;">Questions</h4>
+  </div>
+  <div class="col s6 m6" style="margin-top: 26px;">
+    <div style="font-weight: bold; float:right;" id="quiz-time-left"></div><br>
+  <script type="text/javascript">
+  var total_seconds=60*10;
+  var c_minutes = parseInt(total_seconds/60);
+  var c_seconds = parseInt(total_seconds%60);
+  function CheckTime(){
+    document.getElementById("quiz-time-left").innerHTML ='Time Left: ' + c_minutes + 'min' + c_seconds + 'sec';
+    if(total_seconds <=0){
+      setTimeout('document.quiz.submit()',1);
+    }else{
+      total_seconds=total_seconds-1;
+      c_minutes = parseInt(total_seconds/60);
+      c_seconds = parseInt(total_seconds%60);
+      setTimeout("CheckTime()",1000);
+    }}
+    setTimeout("CheckTime()",1000);
+
+  </script>
+  </div>
+</div>
+<!-- <form action="result" name="quiz" method="post">         
+  {% csrf_token %} -->
+<div class="tab">
+  
+  {%for i in result%}
+  {% with counter=forloop.counter  %}
+  {% if counter == 1 %}
+      <button class="tablinks" onclick="openCity(event,{{ counter }})" id="defaultOpen"> Q.{{counter}}
+</button>
+{% else%}
+<button class="tablinks" onclick="openCity(event,{{ counter }})"> Q.{{counter}}
+</button>
+      {%endif%}
+  {%endwith%}
+  {%endfor%}
+  </div>
+  {%for i in result%}
+  {% with counter=forloop.counter  %}
+    <div id="{{counter}}" class="tabcontent">
+      Q.{{counter}} {{i.title}}
+       <div class="options">
+        {% for key,value in i.option.items %}
+        <label>
+        <input name="{{i.id}}" type="radio" value="{{value}}"/>
+        <span>{{key}} ) {{value}}</span>
+        </label>
+        <br>
+        {%endfor%}
+        </div>
+    </div>
+    {%endwith%}
+    {%endfor%}
+    <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+      <i class="material-icons right">send</i>
+      </button>
+    <!-- </form> -->
+    
+    <script>
+      function openCity(evt, cityName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+          tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " active";
+      }
+      
+      // Get the element with id="defaultOpen" and click on it
+      document.getElementById("defaultOpen").click();
+      </script>
+
+{% include "footer.html" %} 
+
+
+</body>
+</html> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div class="container">
   <div class="row">
     <div class="col s12"><span class="flow-text">
     <div class="card white">
-      <h4>1.1 MULTIPLE CHOICE QUESTIONS</h4>
     <div class="question" style="text-size-adjust: 10px;">
       {%for i in result%}
       <div class="question1"></div>
@@ -27,16 +124,16 @@
       Q.{{counter}} {{i.title}}
       <input type="hidden" name="question"  value="{{ i.id }}">
       <div>
-        <div class="options">
+        <!-- <div class="options">
       {% for key,value in i.option.items %}
       <label>
       <input name="{{i.id}}" type="radio" value="{{value}}"/>
       <span>{{key}} ) {{value}}</span>
       </label>
-<br>
+      <br>
       {%endfor%}
-    </div>
-      {%endwith%}
+      </div> -->
+      <!-- {%endwith%}
       </div>
       <br>
       {%endfor%}
@@ -45,68 +142,14 @@
         </button>
     </div>
   </div>
-  <!-- <input type="submit" name="mysubmit" class="btnRegister"  value="finish test"/> -->
- </div>
+   <input type="submit" name="mysubmit" class="btnRegister"  value="finish test"/> 
+  </div>
  </div>
 </div>
-</span>
+</span> -->
 
-{% include "footer.html" %}
-</form>
-</body>
-</html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<!-- {% include "footer.html" %} 
+</form> -->
 
 
 
