@@ -1,29 +1,245 @@
 {% include "header.html" %}
-
 <body>
-  <form action="result" name="quiz" method="post">
-    {% csrf_token %}
-  <nav>
-    <div class="nav-wrapper">
-      <a href="#" class="brand-logo"><b></b> </a>
-      <!-- <img src="../static/images/logo-small.svg" width="120" height="70"> -->
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li><a href=""></a></li>
-        <li><a href=""></a></li>
-        <li><a href=""><b></b></a></li>
-      </ul>
+  {% include "dashboard.html" %}
+ <div class="row">
+   <div class="center-align">
+  <div class="col s12 m4">
+    
+    <script type="text/javascript">
+      let startTime = localStorage.getItem('starttime')
+      let currentTime  = new Date()
+      var difference = currentTime.getTime() - startTime; 
+      console.log(difference)   
+      var ms = difference; 
+      console.log(ms)
+      var ms = 1000*Math.round(ms/1000); 
+      var d = new Date(ms); 
+      var timediff =  d.getUTCMinutes() + ':' + d.getUTCSeconds();
+      var time = timediff;
+      var timeParts = time.split(":");
+      var timer = +timeParts[0] * (60000 * 60) + (+timeParts[1] * 60000);  
+      console.log(timer)
+      //var actualtime = timer - difference;
+      var time1 = "40:00";
+      var timeParts1 = time1.split(":");
+      var timer1 = +timeParts1[0] * (60000 * 60) + (+timeParts1[1] * 60000);  
+      console.log(timer1)
+  
+      let actualtime = timer1 - timer;
+      console.log((actualtime/1000)/60)
+      
+      var total_seconds=(actualtime/1000)/60;
+      var c_minutes = parseInt(total_seconds/60);
+      var c_seconds = parseInt(total_seconds%60);
+      function CheckTime(){
+        document.getElementById("quiz-time-left").innerHTML ='Time Left: ' + c_minutes + 'min' + c_seconds + 'sec';
+        if(total_seconds <=0){
+          setTimeout('document.quiz.submit()',1);
+        }else{
+          total_seconds=total_seconds-1;
+          c_minutes = parseInt(total_seconds/60);
+          c_seconds = parseInt(total_seconds%60);
+          setTimeout("CheckTime()",1000);
+        }}
+        setTimeout("CheckTime()",1000);
+        
+        document.onkeydown = function (event) {
+          if(event.keyCode == 116 ){
+            event.preventDefault();
+          }
+    }
+      </script>
+    <h4>Questions</h4><br><br><br>
+    <div class="tab">
+      {%for i in result%}
+      {% with counter=forloop.counter  %}
+      {% if counter == 1 %}
+          <button class="tablinks active" onclick="question(event,{{ counter }},'tab')" id="defaultOpen{{counter}}"> Question.{{counter}}
+            <i class="material-icons right">expand_less</i>
+          </button>
+          <!-- <label>
+            <input name="group1" type="radio" />
+            <span></span>
+          </label><br> -->
+          <br><br>
+      {% else%}
+        <button class="tablinks" onclick="question(event,{{ counter }},'tab')" id="defaultOpen{{counter}}"> Question.{{counter}}
+          <i class="material-icons right">expand_less</i>
+        </button>
+        <!-- <label>
+          <input name="group1" type="radio" />
+          <span></span>
+        </label> -->
+        <br><br>
+      {%endif%}
+      {%endwith%}
+      {%endfor%}
+      </div>
+  </div>
+</div>
+  <div class="col s12 m8">
+    <div  class="time" style="font-weight: bold;margin-top: 25px;" id="quiz-time-left"></div><br><br><br><br> 
+    <form action="result" name="quiz" method="post" style="margin-left: 100px;">         
+      {% csrf_token %}
+      {%for i in result%}
+      {% with counter=forloop.counter  %}
+      <div id="{{counter}}" class="tabcontent">
+        <b>Question.{{counter}}<br><br> {{i.title}}</b>
+      <input type="hidden" name="question"  value="{{ i.id }}">
+        <div class="options">
+          <br>
+      {% for key,value in i.option.items %}
+      <label>
+      <input name="{{i.id}}" type="radio" value="{{value}}"/>
+      <span style="border-style: solid; width: 400px; height: 30px; border-radius: 20px;"> <b>{{value}}</b></span><br>
+      </label><br>
+      {%endfor%}
+      </div>
+  <div class="button" style="padding-top: 50px">
+    {% if counter == 1 %}
+    <a class="waves-effect waves-light btn disabled" onclick="question(event,{{ counter }},'pre')" style="margin-right: 3rem;
+      margin-left: 0rem;">
+        <i class="material-icons left">arrow_back</i>Prev 
+     </a>
+    {%else%}
+    <a class="waves-effect waves-light btn" onclick="question(event,{{ counter }},'pre')" style="margin-right: 3rem;
+      margin-left: 1rem;">
+        <i class="material-icons left">arrow_back</i>Prev 
+     </a>
+     {%endif%}
+     {%if counter == 3 %}
+     <a class="waves-effect waves-light btn disabled" onclick="question(event,{{ counter }},'next')" style="margin-left: 15rem;">Next
+       <i class="material-icons right">arrow_forward</i>
+     </a>
+     {%else%}
+     <a class="waves-effect waves-light btn" onclick="question(event,{{ counter }},'next')" style="margin-left: 40rem;">Next
+      <i class="material-icons right">arrow_forward</i>
+    </a>
+    {%endif%}
+  </div>
+      
+      
+      {%endwith%}
+      </div>
+      {%endfor%}
+  </div>
+</div>
+  <br>
+<div class="center-align ">
+  <button class="btn waves-effect" type="submit" name="action" onclick="return confirm('Your answer will be submitted')" style="margin-left: -20rem;">Submit               
+    <i class="material-icons right">send</i>             
+  </button>
+</div>
     </div>
-  </nav>
+  </div>
+  </div>
+ </div>
+</div>
+</form> 
+  </div>
+</div>
+    
 
-<div class="container">
+<script>
+  function question(evt, questionNo, type) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].style.backgroundColor =  "#f1f1f1";
+    }
+  
+    if (type=='pre'){
+        questionNo=parseInt(questionNo)-1
+    }
+    if (type=='next'){
+      questionNo=parseInt(questionNo)+1
+    }
+    console.log(questionNo)
+    document.getElementById(questionNo).style.display = "block";
+    let tabid= 'defaultOpen'+questionNo
+    console.log(tabid)
+    document.getElementById(tabid).style.backgroundColor =  "#ccc";
+    //evt.currentTarget.className += " active";
+  }
+
+   //window.addEventListener('DOMContentLoaded', function(e) {
+ //document.getElementsByClassName('tablinks')[0].click();
+//}, false);
+  
+  // Get the element with id="defaultOpen" and click on it
+  let tabid= 'defaultOpen'+1
+  document.getElementById(tabid).click();
+
+   </script>
+  
+{% include "footer.html" %} 
+
+</body>
+</html> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- {%for i in result%}
+    {% with counter=forloop.counter  %}
+       <div id="{{counter}}" class="tabcontent">
+        Q.{{counter}} {{i.title}}
+         <div class="options">
+          {% for key,value in i.option.items %}
+          <label>
+          <input name="{{i.id}}" type="radio" value="{{value}}"/>
+          <span>{{key}} ) {{value}}</span>
+          </label>
+          <br>
+          {%endfor%}
+          </div>
+      </div>
+      {%endwith%}
+      {%endfor%}
+      <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+        <i class="material-icons right">send</i>
+        </button> -->
+      
+
+    
+    
+<!-- <div class="container">
   <div class="row">
     <div class="col s12"><span class="flow-text">
     <div class="card white">
-      <h4>1.1 MULTIPLE CHOICE QUESTIONS</h4>
-    <div class="question" style="text-size-adjust: 10px;">
-      {%for i in result%}
-      <div class="question1"></div>
+    <div class="question" style="text-size-adjust: 10px;"> -->
+      <!-- {%for i in result%}
+
       {% with counter=forloop.counter  %}
+      <div id="{{counter}}" class="tabcontent">
       Q.{{counter}} {{i.title}}
       <input type="hidden" name="question"  value="{{ i.id }}">
       <div>
@@ -33,85 +249,17 @@
       <input name="{{i.id}}" type="radio" value="{{value}}"/>
       <span>{{key}} ) {{value}}</span>
       </label>
-<br>
+      <br>
       {%endfor%}
-    </div>
+      </div>
+    </div> 
       {%endwith%}
       </div>
       <br>
       {%endfor%}
       <button class="btn waves-effect waves-light" type="submit" name="action">Submit
         <i class="material-icons right">send</i>
-        </button>
-    </div>
-  </div>
-  <!-- <input type="submit" name="mysubmit" class="btnRegister"  value="finish test"/> -->
- </div>
- </div>
-</div>
-</span>
-
-{% include "footer.html" %}
-</form>
-</body>
-</html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        </button> -->
  <!-- {% for Question in Questions %}
         {{Question.id}}
     {% endfor %} -->

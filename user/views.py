@@ -9,6 +9,7 @@ from talent_acquisition.settings import EMAIL_HOST_USER
 import uuid 
 from django.template.loader import get_template
 from django.template import Context
+from user.models import Token
 
 
 #this is index page
@@ -22,8 +23,9 @@ def register(request):
         last_name  = request.POST['last_name']
         username   = request.POST['first_name']
         email      = request.POST['email']
+        password   = request.POST['first_name']
+        token =  uuid.uuid4().hex[:15].upper()
         
-        # if password1==password2:
         if User.objects.filter(username=username).exists():
             messages.info(request,'username taken')
             return redirect('register')
@@ -31,26 +33,32 @@ def register(request):
             messages.info(request,'email taken')
             return redirect('register')
         else:
-            user = User.objects.create_user(username=username,first_name=first_name,last_name=last_name,email=email)
+            user = User.objects.create_user(username=username,first_name=first_name,last_name=last_name,email=email,password=password)
             user.save()
-            print('user created') 
+            print('user created')
+            username=username
+            password=password
+            user = auth.authenticate(username=username,password=password)  
+            auth.login(request,user)
+            verifytoken = Token()             
+            verifytoken.auth_id=request.user.id             
+            verifytoken.token = token                          
+            verifytoken.save()
 
 
 #sending mail to the user  
-        recievers=[]
-        htmly     = get_template('email.html')
-        for user in User.objects.all():
+            recievers=[]
+            htmly     = get_template('email.html')
+            # for user in User.objects.all():
             recievers.append(user.email) 
-            token =  uuid.uuid4().hex[:15].upper()
+            
             html_content = htmly.render({ 'username': user.username,'token':token})
             msg = EmailMultiAlternatives('welcome to navadhiti','', email,recievers)
             msg.attach_alternative(html_content, "text/html")
             msg.send()
+
         return redirect('welcome') 
-    # else:
-    #     messages.info(request,'password is not matching')
-    #     return redirect('register')
-    # return redirect('/')
+    
     else:
         return render(request,'register.html')
 
@@ -59,15 +67,17 @@ def register(request):
 
 #this is welcome page
 def welcome(request):
-        return render(request,'welcome.html')
+    return render(request,'welcome.html')
 
 
 
 def verify(request,token):
-    print(token)
-    return render(request,'dashboard.html')
-    # user = User.objects.get(id=user_id)
-    #do something with this user
+    token1= Token.objects.filter(token = token)     
+    print(token1)     
+    if(token1 ==  token):         
+        return redirect('welcome')     
+    else:         
+        return render(request,'welcome.html')
 
 
 
