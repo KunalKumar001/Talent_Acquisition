@@ -1,41 +1,49 @@
 {% include "header.html" %}
-
-  <body>
-      <div class="container">
-        <form action="welcome" method="post">
-          <!-- <div class="col s12 pull-s7">
-            <span class="flow-text">
-            </span>
-          </div> -->
-    
-
-          <div class="row">
-            <div class="col-sm-6">
-              <div class="card1">
-                <div class="card-body">
-                  <img class="card-img" src="../static/images/image-1.png" alt="Card image cap">
-                  <h5 class="card-title"></h5>
-                  <p class="card-text"></p>
-                  <!-- <a href="#" class="btn btn-primary"></a> -->
-                </div>
-              </div>
-            </div>
-            
-            <div class="col-sm-6">
-              <div class="card2">
-                  <h1 class="card-title"><b>Where Work <br>Happens</b></h1>
-                  <p class="card-text">With supporting text below as a natural lead-in to additional content.
-                    This is a longer card with supporting text below as a natural lead-in to additional content.
-                     This content is a little bit longer.
-                  </p>
-                  <input type="button" class="btn btn-primary" onclick="window.location.href='question/quiz'" value="start test"/>
-                </div>
-              </div>
-            </div>
-          </div>
-      
+<body>
+  {% include "dashboard.html" %}
+  <br>
+  <form action="welcome" method="post">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col s12 m6 ">
+        <img src="../static/images/welcome.jpg" width="80%">
       </div>
-      {% include "footer.html" %}
+      <div class="col s12 m6">
+        <!-- <h4>Hey <b style="text-transform: uppercase;"color: #c6d027;>
+          &#128075;&#127995; {{user.username}}</b>&#128512; &#128519; &#128526;</h4><br> -->
+          <b><h1> Talent Aquisition <br>Screening Tool</h1></b>
+          <br>
+          <ol style="list-style-type:disc;">
+            <!-- <p class="normal"> -->
+              <li>This test contain 20 questions.</li>
+              <li>The test will be of 30 minutes of duration.</li>
+              <li>Questions will be <b>Logicl,General knowledge and Maths.</b></li>
+              <li>Please read all the Questions carefully and Answer the Questions.</li>
+              <li>Please utilise all your time and answer all the Questions.</li>
+              <li>All the Best</li>
+            </ol>
+            <br>
+            <input type="button" class="btn btn-primary" onclick="start()" value="Start Test"/>
+            <script>
+              function start(){
+                var currentTime = new Date();
+                localStorage.setItem('starttime', currentTime.getTime());
+                window.location.href='question/quiz'
+              }
+            </script>
+          </div>
+        </div>
+      </div>
+      <br>
+      <br>
+      <br>
+    </form>
+    {% include "footer.html" %}
+    <footer class="page-footer">
+      <div class="footer-copyright">
+        <div class="container center-align">
+          © Copyright <b>Navadhiti</b>. All Rights Reserved
+        </div>
+      </div>
+    </footer>
   </body>
-</form>
-</html>

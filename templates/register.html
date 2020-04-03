@@ -1,129 +1,56 @@
 {% load static %}
 {% include "header.html" %}
 <body>
-    <div class="card white">
-    <div class="row full-screen"  style="background-color: #EDF8F2;">
-        <div class="col s6 m6 img-style">
-            <img src="../static/images/img2.webp" class="rounded float-left" style="padding-top: 100px;">
-        </div>
-
-        <div class="col s6 m6">
-            <form action="register" method="post" class="register">
-                {% csrf_token %}
-            <div class="row">
-                <div class="input-field col s6">
-                  <input name="first_name" id="first_name" type="text" class="validate" required>
-                  <label for="first_name" >First Name</label>
+    {% if messages %}
+    <div class="alert alert-success alert-dismissible">
+        {% for message in messages %}
+        <p>{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+        
+        <div class="row">
+            <div class="col s6 m6 ">
+                <img src="../static/images/register.jpg" width="100%">
+            </div>
+            <div class="col s6 m6">
+                <div class="row">
+                    <div class="col s12 m7 offset-m2">
+                        <div class="card mt-5 ">
+                            <div class="card-content p-3">
+                                <div class="center-align">
+                                    <img src="../static/images/logo-small.svg" width="150">
+                                </div>
+                                <form action="register" method="post" class="register">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                            <input name="first_name" id="first_name" type="text" class="validate" required>
+                                            <label for="first_name" >First Name</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                            <input name="last_name"id="last_name" type="text" class="validate" required>
+                                            <label for="last_name">Last Name</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                            <input name="email" id="email" type="text" class="validate" required>
+                                            <label for="email">Email</label>
+                                        </div>
+                                    </div>
+                                    <div class="center-align"><input type="submit" class="btn"  value="Register"/> <br></div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="input-field col s6">
-                    <input name="last_name"id="last_name" type="text" class="validate" required>
-                    <label for="last_name">Last Name</label>
-                  </div>
-            </div>
-            <div class="row">
-                <div class="input-field col s6">
-                    <input name="email" id="email" type="text" class="validate" required>
-                    <label for="email">Email</label>
-                  </div>                
-                </div>
-            <input type="submit" class="btn"  value="Register"/> <br> 
-            {% for message in messages %}
-                <b style="margin-left: 180px;">{{message}}</b>
-            {% endfor%} 
-            
-    </form>
-        </div>
         </div>
     </div>
     {% include "footer.html" %}
 </body>
 </html>
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-{% load static %}
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-Include the above in your HEAD tag 
-
-
-<form action="register" method="post">
-    {% csrf_token %}
-<div class="container register">
-                <div class="row">
-                    <div class="col-md-3 register-left">
-                        <!img src="../static/images/logo-small.svg" alt=""/>
-                        <h3>Welcome</h3>
-                        <p>You are 30 seconds away from earning your own money!</p>
-                    </div>
-                    <div class="col-md-9 register-right"> 
-                                          
-                        <div class="tab-content" id="myTabContent">
-                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                                <h3 class="register-heading">Enter your details</h3>
-                                <div class="row register-form">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" name="first_name" placeholder="First Name *" value=""  required/>
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" name="last_name" placeholder="Last Name *" value=""  required />
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" name="username" placeholder="Username *" value=""  required />
-                                        </div>     
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <input type="password" class="form-control" name="password1" placeholder="Password *" value=""  required/>
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="password" class="form-control" name="password2"  placeholder="Confirm Password *" value=""  required/>
-                                        </div>                                       
-                                        <div class="form-group">
-                                            <input type="email" name="email" class="form-control" placeholder="Email *" value=""  required/>
-                                        </div>
-                                        <div>
-                                            {%  for message in messages %}
-                                            <b style="margin-left: -84px;"> {{message}}</b>
-                                            {% endfor %}
-                                        </div> 
-                                        <input type="submit" class="btnRegister"  value="Register"/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-</form>
-</body>
-</html> -->

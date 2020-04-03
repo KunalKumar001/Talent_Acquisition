@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'timer.apps.TimerConfig',
     'user.apps.UserConfig',
     'typ.apps.TypConfig',
     'question.apps.QuestionConfig',
@@ -47,10 +48,11 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'django_session_timeout.middleware.SessionTimeoutMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -88,9 +90,9 @@ WSGI_APPLICATION = 'talent_acquisition.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'talent_acquisition',
+        'NAME': 'tallent_acquisition',
         'USER': 'postgres',
-        'PASSWORD': 'kunal',
+        'PASSWORD': '1234',
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -144,3 +146,7 @@ EMAIL_HOST_USER='yadavdheerajyadav31@gmail.com'
 EMAIL_HOST_PASSWORD='9651455167'
 EMAIL_PORT = 587
 EMAIL_USE_TLS=True
+
+
+
+
